@@ -55,3 +55,59 @@ export function partyEdit(formData) {
         body: formData
       })
 }
+
+export function partyCreate(formData) {
+    return fetch( restPrefix + 'party_create', {
+        headers: restHeaders,
+        method: methodPOST,
+        body: formData
+      })
+}
+
+export function productList(formData) {
+    return fetch( restPrefix + 'product_list', {
+        headers: restHeaders,
+        method: methodPOST,
+        body: formData
+      })
+}
+
+export function productEdit(formData) {
+    return fetch( restPrefix + 'product_edit', {
+        headers: restHeaders,
+        method: methodPOST,
+        body: formData
+      })
+}
+
+export function productCreate(formData) {
+    return fetch( restPrefix + 'product_create', {
+        headers: restHeaders,
+        method: methodPOST,
+        body: formData
+      })
+}
+
+export function invoiceList(formData) {
+    return fetch( restPrefix + 'invoice_list', {
+        headers: restHeaders,
+        method: methodPOST,
+        body: formData
+      })
+}
+
+export function invoiceView(formData) {
+    return fetch( restPrefix + 'invoice_view', {
+        headers: restHeaders,
+        method: methodPOST,
+        body: formData
+      })
+}
+
+export function invoiceCreate(formData) {
+    return fetch( restPrefix + 'invoice_create', {
+        headers: restHeaders,
+        method: methodPOST,
+        body: formData
+      })
+}

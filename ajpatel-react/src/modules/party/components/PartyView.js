@@ -60,7 +60,6 @@ export default class PartyView extends Component {
       editedData.party_city &&
       editedData.party_state &&
       editedData.party_pincode) {
-        this.props.updateState('isLoading', true);
         this.savePartyData(editedData);
     } else {
       this.setState({isError: true});
@@ -69,6 +68,7 @@ export default class PartyView extends Component {
 
   savePartyData(editedData) {
     const self = this;
+    self.props.updateState('isLoading', true);
 
     var FormData = require('form-data');
     var form = new FormData();
@@ -97,7 +97,7 @@ export default class PartyView extends Component {
 
           if(responseObj.SUCCESS === "TRUE") {
             self.setState({isEditable: false});
-            self.props.getPartyView(editedData.party_id);
+            self.props.updateState('data', editedData);
           } else {
             self.props.updateState('errorMessage', responseObj.MESSAGE);
           }

@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { partyList } from '../../../rest/Rest';
+import { productList } from '../../../rest/Rest';
 import { getSessionStorage } from '../../../commons/utils/Utils';
 import { loginToken,
   userLoginToken,
   keyword
 } from '../../../commons/constants/Constants';
 
-export default class PartyList extends Component {
+export default class ProductList extends Component {
   
   constructor(props) {
     super(props);
@@ -17,14 +17,14 @@ export default class PartyList extends Component {
         errorMessage: ''
     }
     
-    this.getPartyData = this.getPartyData.bind(this);
+    this.getProductData = this.getProductData.bind(this);
   }
 
   componentDidMount() {
-    this.getPartyData();
+    this.getProductData();
   }
 
-  getPartyData() {
+  getProductData() {
     const self = this;
     self.setState({isLoading: true});
 
@@ -35,7 +35,7 @@ export default class PartyList extends Component {
       form.append(keyword, this.state.keyword);     
 
       let responseStatus;
-      partyList(form)
+      productList(form)
         .then(function(response) {
           responseStatus = response.status;
           return response.text();
@@ -46,7 +46,7 @@ export default class PartyList extends Component {
             let responseObj = JSON.parse(response);
 
             if(responseObj.SUCCESS === "TRUE") {
-              self.setState({data: responseObj.DATA.sort((arg1, arg2) => arg1.party_id > arg2.party_id)});
+              self.setState({data: responseObj.DATA.sort((arg1, arg2) => arg1.product_id > arg2.product_id)});
             } else {
               self.setState({errorMessage: responseObj.MESSAGE});  
             }
@@ -69,11 +69,11 @@ export default class PartyList extends Component {
     if(data && data.length > 0) {
         const tableBody = data.map((data, key) =>
         <tr key={key}>
-            <td>{data.party_id}</td>
-            <td>{data.party_name}</td>
-            <td>{data.party_contact_person}</td>
-            <td>{data.party_mobile}</td>
-            <td><button onClick={() => this.props.changeComponent("view", data.party_id)}>View</button></td>
+            <td>{data.product_id}</td>
+            <td>{data.product_name}</td>
+            <td>{data.product_hsn_no}</td>
+            <td>{data.product_rate}</td>
+            <td><button onClick={() => this.props.changeComponent("view", data)}>View</button></td>
         </tr>
         );
 
@@ -96,8 +96,8 @@ export default class PartyList extends Component {
                     <tr>
                         <th>ID</th>
                         <th>Name</th>
-                        <th>Contact Person</th>
-                        <th>Mobile</th>
+                        <th>HSN No.</th>
+                        <th>Rate</th>
                         <th>Action</th>
                     </tr>
                 </thead>

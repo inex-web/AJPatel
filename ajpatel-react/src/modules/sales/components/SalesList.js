@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import { partyList } from '../../../rest/Rest';
+import { invoiceList } from '../../../rest/Rest';
 import { getSessionStorage } from '../../../commons/utils/Utils';
 import { loginToken,
-  userLoginToken,
-  keyword
+  userLoginToken
 } from '../../../commons/constants/Constants';
 
-export default class PartyList extends Component {
+export default class SalesList extends Component {
   
   constructor(props) {
     super(props);
@@ -17,25 +16,24 @@ export default class PartyList extends Component {
         errorMessage: ''
     }
     
-    this.getPartyData = this.getPartyData.bind(this);
+    this.getSalesData = this.getSalesData.bind(this);
   }
 
   componentDidMount() {
-    this.getPartyData();
+    this.getSalesData();
   }
 
-  getPartyData() {
+  getSalesData() {
     const self = this;
     self.setState({isLoading: true});
 
     if(getSessionStorage(userLoginToken)) {
       var FormData = require('form-data');
       var form = new FormData();
-      form.append(loginToken, getSessionStorage(userLoginToken));
-      form.append(keyword, this.state.keyword);     
+      form.append(loginToken, getSessionStorage(userLoginToken));    
 
       let responseStatus;
-      partyList(form)
+      invoiceList(form)
         .then(function(response) {
           responseStatus = response.status;
           return response.text();
@@ -46,7 +44,7 @@ export default class PartyList extends Component {
             let responseObj = JSON.parse(response);
 
             if(responseObj.SUCCESS === "TRUE") {
-              self.setState({data: responseObj.DATA.sort((arg1, arg2) => arg1.party_id > arg2.party_id)});
+              self.setState({data: responseObj.DATA.sort((arg1, arg2) => arg1.invoice_date < arg2.invoice_date)});
             } else {
               self.setState({errorMessage: responseObj.MESSAGE});  
             }
@@ -69,11 +67,12 @@ export default class PartyList extends Component {
     if(data && data.length > 0) {
         const tableBody = data.map((data, key) =>
         <tr key={key}>
-            <td>{data.party_id}</td>
-            <td>{data.party_name}</td>
-            <td>{data.party_contact_person}</td>
-            <td>{data.party_mobile}</td>
-            <td><button onClick={() => this.props.changeComponent("view", data.party_id)}>View</button></td>
+            <td>{data.invoice_id}</td>
+            <td>{data.invoice_party_name}</td>
+            <td>{data.invoice_number}</td>
+            <td>{data.invoice_total}</td>
+            <td>{data.invoice_date}</td>
+            <td><button onClick={() => this.props.changeComponent("view", data.invoice_id)}>View</button></td>
         </tr>
         );
 
@@ -95,9 +94,10 @@ export default class PartyList extends Component {
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Name</th>
-                        <th>Contact Person</th>
-                        <th>Mobile</th>
+                        <th>Party Name</th>
+                        <th>Invoice Number</th>
+                        <th>Invoice Total</th>
+                        <th>Invoice Date</th>
                         <th>Action</th>
                     </tr>
                 </thead>

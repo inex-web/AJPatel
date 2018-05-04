@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { partyView } from '../../../rest/Rest';
 import PartyList from './PartyList';
 import PartyView from './PartyView';
+import PartyCreate from './PartyCreate';
 import { loginToken,
   userLoginToken,
   partyId
@@ -16,7 +17,7 @@ export default class Party extends Component {
       component: 'list',
       data: '',
       isLoading: false,  
-      errorMessage: '',      
+      errorMessage: ''   
     }
     
     this.changeComponent = this.changeComponent.bind(this);
@@ -27,7 +28,6 @@ export default class Party extends Component {
   changeComponent(name, id) {
     this.setState({component: name});
     if(name === "view") {
-      this.setState({isLoading: true} );  
       this.getPartyView(id);
     }
   }
@@ -38,6 +38,7 @@ export default class Party extends Component {
 
   getPartyView(id) {
     const self = this;
+    self.setState({isLoading: true} );  
 
     if(getSessionStorage(userLoginToken)) {
       var FormData = require('form-data');
@@ -87,13 +88,17 @@ export default class Party extends Component {
         <PartyList 
           changeComponent={this.changeComponent}/>
         :
+        component === "view"
+        ?
         <PartyView 
           changeComponent={this.changeComponent}
           updateState={this.updateState}
-          getPartyView={this.getPartyView}
           data={data}
           isLoading={isLoading}
           errorMessage={errorMessage}/>
+        :
+        <PartyCreate 
+          changeComponent={this.changeComponent}/>
         }
       </div>
     );
